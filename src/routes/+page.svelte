@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { faClose } from '@fortawesome/free-solid-svg-icons'
-
+	import PostInfo from '$lib/components/PostInfo.svelte'
+	import PostInfoLoading from '$lib/components/PostInfoLoading.svelte'
 	import PostDetails from '$lib/components/PostDetails.svelte'
 	import Icon from '$lib/components/Icon.svelte'
-	import PostInfo from '$lib/components/PostInfo.svelte'
+
+	import { faClose } from '@fortawesome/free-solid-svg-icons'
 
 	import type { PostType } from '$lib/types/PostType'
 	import type { CommentType } from '$lib/types/CommentType'
@@ -14,6 +15,7 @@
 
 	let subreddit: string = $state('')
 	let posts: PostType[] = $state([])
+	let isLoadingPosts = $state(true)
 	let selectedPost: PostType | null = $state(null)
 	let modal: HTMLDialogElement | null = $state(null)
 	let showingSubredditName = $state(false)
@@ -59,6 +61,7 @@
 		if (subreddit == 'all' || subreddit.includes('+')) {
 			showingSubredditName = true
 		}
+		isLoadingPosts = false
 	}
 
 	let debouncedGetList = debounce(function () {
@@ -98,6 +101,7 @@
 		bind:value={subreddit}
 		oninput={() => {
 			posts = []
+			isLoadingPosts = true
 			debouncedGetList()
 		}}
 	/>
@@ -105,6 +109,13 @@
 
 <div class="grid-container">
 	<main>
+		{#if isLoadingPosts}
+			{#each Array(10) as _}
+				<div class="link-panel panel-loading">
+					<PostInfoLoading />
+				</div>
+			{/each}
+		{/if}
 		{#each posts as post}
 			<a
 				class="link-panel"
@@ -197,6 +208,9 @@
 		padding: 8px;
 		background-color: #222;
 		border-radius: 4px;
+	}
+	.link-panel.panel-loading {
+		min-height: 64px;
 	}
 	.link-panel:hover {
 		cursor: pointer;

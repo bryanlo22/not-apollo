@@ -244,7 +244,10 @@
 			overflow-y: scroll;
 		}
 	}
-	dialog {
+	dialog[open] {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 		min-width: 100%;
 		min-height: 100%;
 		width: 100%;

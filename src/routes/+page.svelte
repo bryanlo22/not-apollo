@@ -108,7 +108,7 @@
 </div>
 
 <div class="grid-container">
-	<main>
+	<main class:has-selected-post={selectedPost}>
 		{#if isLoadingPosts}
 			{#each Array(10) as _}
 				<div class="link-panel panel-loading">
@@ -138,7 +138,7 @@
 			<PostDetails post={selectedPost} {comments} />
 		{/if}
 	</aside>
-	<dialog bind:this={modal}>
+	<dialog bind:this={modal} onclose={() => (selectedPost = null)}>
 		<button
 			class="close-btn"
 			onclick={() => {
@@ -157,6 +157,15 @@
 	:global(html) {
 		box-sizing: border-box;
 	}
+	:global(html:has(.has-selected-post)) {
+		overflow: hidden;
+	}
+	@media (min-width: 768px) {
+		:global(html:has(.has-selected-post)) {
+			overflow: unset;
+		}
+	}
+
 	:global(body) {
 		max-width: 1440px;
 		margin: 0 auto;

@@ -102,6 +102,7 @@
 		oninput={() => {
 			posts = []
 			isLoadingPosts = true
+			scrollTo({ top: 0, behavior: 'smooth' })
 			debouncedGetList()
 		}}
 	/>

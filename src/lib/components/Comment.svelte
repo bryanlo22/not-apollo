@@ -70,6 +70,9 @@
 	.hidden .content {
 		display: none;
 	}
+	.content {
+		word-break: break-word;
+	}
 	a {
 		display: block;
 		color: unset;
